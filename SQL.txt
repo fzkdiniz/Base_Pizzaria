@@ -1,0 +1,73 @@
+CREATE TABLE pizza (
+    id INT PRIMARY KEY,
+    tamanho VARCHAR(100),
+    descricao VARCHAR(100),
+    preco VARCHAR(100),
+    sabor VARCHAR(100),
+    ingredientes VARCHAR(100) NULL,
+    id_receita INT,
+    FOREIGN KEY (id_receita) REFERENCES receita(id)
+);
+
+CREATE TABLE receita (
+    id INT PRIMARY KEY,
+    instrucoes VARCHAR(100),
+    autor VARCHAR(100)
+);
+
+CREATE TABLE pizzaiolo (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    salario INT,
+    id_receita_experiencia INT,
+    FOREIGN KEY (id_receita_experiencia) REFERENCES receita(id)
+);
+
+
+  
+CREATE TABLE pizzaiolo_receita (
+    id_pizzaiolo INT,
+    id_receita INT,
+    PRIMARY KEY (id_pizzaiolo, id_receita),
+    FOREIGN KEY (id_pizzaiolo) REFERENCES pizzaiolo(id),
+    FOREIGN KEY (id_receita) REFERENCES receita(id)
+);
+
+INSERT INTO receita (id, instrucoes, autor) VALUES
+(1, 'Passos da Receita 1', 'Autor 1'),
+(2, 'Passos da Receita 2', 'Autor 2'),
+(3, 'Passos da Receita 3', 'Autor 3'),
+(4, 'Passos da Receita 4', 'Autor 4'),
+(5, 'Passos da Receita 5', 'Autor 5');
+
+INSERT INTO pizza (id, tamanho, descricao, preco, sabor, ingredientes, id_receita) VALUES
+(1, 'Média', 'Pizza de Calabresa', '20.00', 'Calabresa', 'Ingredientes da Pizza de Calabresa', 1),
+(2, 'Grande', 'Pizza de Margherita', '25.00', 'Margherita', 'Ingredientes da Pizza de Margherita', 2),
+(3, 'Pequena', 'Pizza de Frango', '18.00', 'Frango', 'Ingredientes da Pizza de Frango', 3),
+(4, 'Média', 'Pizza de Pepperoni', '22.00', 'Pepperoni', 'Ingredientes da Pizza de Pepperoni', 4),
+(5, 'Grande', 'Pizza de Vegetariana', '23.00', 'Vegetariana', 'Ingredientes da Pizza Vegetariana', 5);
+
+
+INSERT INTO pizzaiolo_receita (id_pizzaiolo, id_receita) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(1, 5);
+
+SELECT
+    p.id AS "ID da Pizza",
+    p.sabor AS "Sabor da Pizza",
+    pi.ingrediente AS "Ingrediente"
+FROM pizza p
+JOIN pizza_ingredientes pi ON p.id = pi.id_pizza;
+
+
+
+SELECT
+    pi.ingrediente AS "Ingrediente",
+    GROUP_CONCAT(p.sabor) AS "Pizzas"
+FROM pizza_ingredientes pi
+JOIN pizza p ON pi.id_pizza = p.id
+GROUP BY pi.ingrediente;
+
