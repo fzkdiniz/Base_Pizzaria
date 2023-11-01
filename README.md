@@ -1,1 +1,105 @@
 # Base_Pizzaria
+
+![image](https://github.com/fzkdiniz/Base_Pizzaria/assets/61026576/16c6590a-7314-482f-9ddf-3d72b0cceb0b)
+
+
+-- Create the 'receita' table
+CREATE TABLE receita (
+    id INT PRIMARY KEY,
+    instrucoes TEXT,
+    autor VARCHAR(100)
+);
+
+-- Create the 'pizzaiolo' table
+CREATE TABLE pizzaiolo (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    salario INT,
+    id_receita_experiencia INT,
+    FOREIGN KEY (id_receita_experiencia) REFERENCES receita(id)
+);
+
+-- Create the 'pizza' table
+CREATE TABLE pizza (
+    id INT PRIMARY KEY,
+    tamanho VARCHAR(100),
+    descricao VARCHAR(100),
+    preco DECIMAL(10, 2),
+    sabor VARCHAR(100),
+    ingredientes TEXT,
+    id_receita INT,
+    FOREIGN KEY (id_receita) REFERENCES receita(id)
+);
+
+-- Create the 'pizzaiolo_receita' table
+CREATE TABLE pizzaiolo_receita (
+    id_pizzaiolo INT,
+    id_receita INT,
+    PRIMARY KEY (id_pizzaiolo, id_receita),
+    FOREIGN KEY (id_pizzaiolo) REFERENCES pizzaiolo(id),
+    FOREIGN KEY (id_receita) REFERENCES receita(id)
+);
+
+-- Insert data into the 'receita' table
+INSERT INTO receita (id, instrucoes, autor) VALUES
+(1, 'Passos da Receita 1', 'Autor 1'),
+(2, 'Passos da Receita 2', 'Autor 2'),
+(3, 'Passos da Receita 3', 'Autor 3'),
+(4, 'Passos da Receita 4', 'Autor 4'),
+(5, 'Passos da Receita 5', 'Autor 5');
+
+-- Insert data into the 'pizzaiolo' table
+INSERT INTO pizzaiolo (id, nome, salario, id_receita_experiencia) VALUES
+(1, 'Pizzaiolo 1', 2500, 1);
+
+-- Insert data into the 'pizza' table
+INSERT INTO pizza (id, tamanho, descricao, preco, sabor, ingredientes, id_receita) VALUES
+(1, 'Média', 'Pizza de Calabresa', 20.00, 'Calabresa', 'Ingredientes da Pizza de Calabresa', 1),
+(2, 'Grande', 'Pizza de Margherita', 25.00, 'Margherita', 'Ingredientes da Pizza de Margherita', 2),
+(3, 'Pequena', 'Pizza de Frango', 18.00, 'Frango', 'Ingredientes da Pizza de Frango', 3),
+(4, 'Média', 'Pizza de Pepperoni', 22.00, 'Pepperoni', 'Ingredientes da Pizza de Pepperoni', 4),
+(5, 'Grande', 'Pizza de Vegetariana', 23.00, 'Vegetariana', 'Ingredientes da Pizza Vegetariana', 5);
+
+-- Insert data into the 'pizzaiolo_receita' table
+INSERT INTO pizzaiolo_receita (id_pizzaiolo, id_receita) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(1, 5);
+
+
+-- OS SELECTS --
+--Relatório com todas as pizzas e os pizzaiolos aptos a produzi-las:--
+SELECT
+    p.id AS pizza_id,
+    p.descricao AS pizza_descricao,
+    p.sabor AS pizza_sabor,
+    pz.nome AS pizzaiolo_nome
+FROM pizza AS p
+JOIN pizzaiolo AS pz ON p.id_receita = pz.id_receita_experiencia;
+
+
+--Relatório com todas as pizzas e seus ingredientes:--
+SELECT
+    p.descricao AS pizza_descricao,
+    p.ingredientes AS pizza_ingredientes
+FROM pizza AS p;
+
+--Relatório com todos os ingredientes e as pizzas onde são utilizados:--
+SELECT
+    p.ingredientes AS ingrediente,
+    p.descricao AS pizza_relacionada
+FROM pizza AS p;
+
+--Relatório com os sabores de todas as pizzas, o nome dos pizzaiolos que as fazem e as instruções para produzi-las:--
+SELECT
+    p.descricao AS pizza_descricao,
+    p.sabor AS pizza_sabor,
+    pz.nome AS pizzaiolo_nome,
+    r.instrucoes AS receita_instrucoes
+FROM pizza AS p
+JOIN pizzaiolo AS pz ON p.id_receita = pz.id_receita_experiencia
+JOIN receita AS r ON p.id_receita = r.id;
+
+
