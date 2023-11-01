@@ -3,6 +3,8 @@
 ![image](https://github.com/fzkdiniz/Base_Pizzaria/assets/61026576/16c6590a-7314-482f-9ddf-3d72b0cceb0b)
 
 
+
+
 -- Create the 'receita' table
 CREATE TABLE receita (
     id INT PRIMARY KEY,
@@ -81,16 +83,24 @@ JOIN pizzaiolo AS pz ON p.id_receita = pz.id_receita_experiencia;
 
 
 --Relatório com todas as pizzas e seus ingredientes:--
+![image](https://github.com/fzkdiniz/Base_Pizzaria/assets/61026576/8cf9510a-ab1c-4a62-a5d1-a06f95ce2826)
+
 SELECT
     p.descricao AS pizza_descricao,
     p.ingredientes AS pizza_ingredientes
 FROM pizza AS p;
+![image](https://github.com/fzkdiniz/Base_Pizzaria/assets/61026576/b321e98d-4862-48ed-b0c3-cd1ec8dcd90e)
+
 
 --Relatório com todos os ingredientes e as pizzas onde são utilizados:--
 SELECT
     p.ingredientes AS ingrediente,
     p.descricao AS pizza_relacionada
 FROM pizza AS p;
+KKKK
+![image](https://github.com/fzkdiniz/Base_Pizzaria/assets/61026576/f26ee0a5-e96d-44ca-a2f5-75453c51071e)
+
+
 
 --Relatório com os sabores de todas as pizzas, o nome dos pizzaiolos que as fazem e as instruções para produzi-las:--
 SELECT
@@ -101,5 +111,6 @@ SELECT
 FROM pizza AS p
 JOIN pizzaiolo AS pz ON p.id_receita = pz.id_receita_experiencia
 JOIN receita AS r ON p.id_receita = r.id;
+![image](https://github.com/fzkdiniz/Base_Pizzaria/assets/61026576/564862ac-6ed6-4cd0-8020-cbee417dc553)
 
 
